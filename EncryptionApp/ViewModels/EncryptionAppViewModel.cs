@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using DirectionClient.Commands;
+﻿using EncryptionApp.Commands;
 
 namespace EncryptionApp.ViewModels
 {
@@ -50,12 +49,29 @@ namespace EncryptionApp.ViewModels
 			}
 		}
 
-		public ICommand UpdateViewCommand { get; set; }
+		public DelegateCommand UpdateViewCommand => new(UpdateView);
 
 		public EncryptionAppViewModel()
 		{
-			UpdateViewCommand = new UpdateViewCommand(this);
-			SelectedViewModel = new CaesarAlgorithmViewModel(this);
+			SelectedViewModel = new CaesarCipherViewModel(this);
+		}
+
+		private void UpdateView(object parameter)
+		{
+			if (parameter.ToString().Equals("Caesar"))
+			{
+				SelectedViewModel = new CaesarCipherViewModel(this);
+			}
+
+			if (parameter.ToString().Equals("Symmetric"))
+			{
+				SelectedViewModel = new SymmetricKeyViewModel();
+			}
+
+			if (parameter.ToString().Equals("Substitution"))
+			{
+				SelectedViewModel = new SubstitutionCipherViewModel(this);
+			}
 		}
 	}
 }

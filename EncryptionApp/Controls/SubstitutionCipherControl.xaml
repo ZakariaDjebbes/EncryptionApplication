@@ -1,0 +1,58 @@
+﻿<UserControl
+	x:Class="EncryptionApp.Controls.SubstitutionCipherControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:EncryptionApp.Controls"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	x:Name="control"
+	d:DesignHeight="450"
+	d:DesignWidth="800"
+	mc:Ignorable="d">
+	<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+		<StackPanel Margin="5" CanVerticallyScroll="True">
+			<Grid>
+				<Grid Margin="5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="0.4*" />
+						<ColumnDefinition Width="0.6*" />
+					</Grid.ColumnDefinitions>
+					<Label Content="Case specific" />
+					<CheckBox
+						Grid.Column="1"
+						VerticalAlignment="Center"
+						IsChecked="{Binding CaseSpecific}" />
+				</Grid>
+			</Grid>
+			<DataGrid
+				AutoGenerateColumns="False"
+				CanUserAddRows="True"
+				CanUserDeleteRows="True"
+				CanUserResizeRows="False"
+				HorizontalScrollBarVisibility="Disabled"
+				ItemsSource="{Binding Path=Entries, Mode=TwoWay}"
+				VerticalScrollBarVisibility="Auto">
+				<DataGrid.Columns>
+					<DataGridTextColumn
+						Width="1*"
+						Binding="{Binding Character}"
+						Header="Character" />
+					<DataGridTextColumn
+						Width="1*"
+						Binding="{Binding Substitution}"
+						Header="Substitution" />
+					<DataGridTemplateColumn Width="1*" Header="Delete">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Button
+									Command="{Binding DataContext.DeleteRowCommand, ElementName=control}"
+									CommandParameter="{Binding}"
+									Content="Delete" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

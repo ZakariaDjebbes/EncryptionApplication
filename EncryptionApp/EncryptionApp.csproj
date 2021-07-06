@@ -12,6 +12,12 @@
     <None Remove="Resources\main-icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="morelinq" Version="3.3.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Encryption\Encryption.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\about-icon.png" />
     <Resource Include="Resources\main-icon.png" />
   </ItemGroup>

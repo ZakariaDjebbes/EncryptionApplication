@@ -28,10 +28,14 @@ namespace EncryptionApp.Views
 				return;
 			}
 
-			if (model.SelectedViewModel is CaesarAlgorithmViewModel caesarVM)
+			if (model.SelectedViewModel is CaesarCipherViewModel caesarVM)
 			{
 				var res = caesarVM.Encrypt(model.InputText);
 				model.EncryptionResult = res;
+			}
+			else if (model.SelectedViewModel is SubstitutionCipherViewModel substitutionVM)
+			{
+
 			}
 		}
 
@@ -42,7 +46,7 @@ namespace EncryptionApp.Views
 
 		private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			About about = new About();
+			About about = new();
 			about.Show();
 		}
 	}

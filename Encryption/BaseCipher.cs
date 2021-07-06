@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace EncryptionApp.Encryption
+namespace Encryption
 {
-	public abstract class BaseEncryption
+	public abstract class BaseCipher
 	{
 		/// <summary>
 		/// Fires whenever an encryption starts.
@@ -14,32 +14,31 @@ namespace EncryptionApp.Encryption
 		/// <para>
 		///		Contains the encryption arguments.
 		/// </para>
-		/// see <see cref="EncryptionArgs"/>
+		/// see <see cref="CipherEventArgs"/>
 		/// </summary>
-		public event EventHandler<EncryptionArgs> EncryptionOngoing;
+		public event EventHandler<CipherEventArgs> EncryptionOngoing;
 
 		/// <summary>
 		/// Fires whenever an encryption is finished.
 		/// <para>
 		///		Contains the encryption arguments.
 		/// </para>
-		/// see <see cref="EncryptionArgs"/>
+		/// see <see cref="CipherEventArgs"/>
 		/// </summary>
-		public event EventHandler<EncryptionArgs> EncryptionFinished;
+		public event EventHandler<CipherEventArgs> EncryptionFinished;
 
 
 		/// <summary>
 		/// The Encryption result of the last encrypted input.
 		/// </summary>
-		public EncryptionResult EncryptionResult
+		public CipherResult EncryptionResult
 		{
 			get
 			{
 				if (encryptionResult == null)
-					encryptionResult = new EncryptionResult(
+					encryptionResult = new CipherResult(
 						string.Empty,
-						string.Empty,
-						EncryptionResultStatus.None);
+						string.Empty);
 
 				return encryptionResult;
 			}
@@ -50,15 +49,17 @@ namespace EncryptionApp.Encryption
 			}
 		}
 
-		private EncryptionResult encryptionResult;
+		private CipherResult encryptionResult;
 
 		protected void OnEncryptionStarted()
 			=> EncryptionStarted?.Invoke(this, new EventArgs());
 
 		protected void OnEncryptionOngoing(float pourcentage, double elapsedTime)
-			=> EncryptionOngoing?.Invoke(this, new EncryptionArgs { Pourcentage = pourcentage, ElapsedSeconds = elapsedTime });
+			=> EncryptionOngoing?.Invoke(this, new CipherEventArgs(pourcentage, elapsedTime));
 
 		protected void OnEncryptionFinished(float pourcentage, double elapsedTime)
-			=> EncryptionFinished?.Invoke(this, new EncryptionArgs { Pourcentage = pourcentage, ElapsedSeconds = elapsedTime });
+			=> EncryptionFinished?.Invoke(this, new CipherEventArgs(pourcentage, elapsedTime));
+
+		public abstract CipherResult Encrypt(string input);
 	}
 }

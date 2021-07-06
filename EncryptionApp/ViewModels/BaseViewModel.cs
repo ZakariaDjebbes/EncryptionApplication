@@ -1,6 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using EncryptionApp.Encryption;
+﻿using System.ComponentModel;
+using Encryption;
 
 namespace EncryptionApp.ViewModels
 {
@@ -11,9 +10,9 @@ namespace EncryptionApp.ViewModels
 		protected void OnPropertyChanged(string propertyName)
 			=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-		private EncryptionResult encryptionResult;
+		private CipherResult encryptionResult;
 
-		public EncryptionResult EncryptionResult
+		public CipherResult EncryptionResult
 		{
 			get { return encryptionResult; }
 			set

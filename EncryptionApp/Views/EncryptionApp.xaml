@@ -37,8 +37,8 @@
 		</Menu>
 		<Grid Margin="5">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="0.25*" />
-				<RowDefinition Height="0.55*" />
+				<RowDefinition Height="0.4*" />
+				<RowDefinition Height="0.6*" />
 				<RowDefinition Height="auto" />
 				<RowDefinition Height="auto" />
 			</Grid.RowDefinitions>
@@ -58,6 +58,11 @@
 							CommandParameter="Caesar"
 							Content="Caesar Cipher"
 							IsChecked="True" />
+						<RadioButton
+							Margin="5"
+							Command="{Binding UpdateViewCommand}"
+							CommandParameter="Substitution"
+							Content="Substitution Cipher" />
 						<RadioButton
 							Margin="5"
 							Command="{Binding UpdateViewCommand}"

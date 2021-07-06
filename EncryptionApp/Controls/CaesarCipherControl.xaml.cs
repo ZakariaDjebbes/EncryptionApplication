@@ -2,9 +2,9 @@
 
 namespace EncryptionApp.Controls
 {
-	public partial class CaesarAlgorithmControl : UserControl
+	public partial class CaesarCipherControl : UserControl
 	{
-		public CaesarAlgorithmControl()
+		public CaesarCipherControl()
 		{
 			InitializeComponent();
 		}

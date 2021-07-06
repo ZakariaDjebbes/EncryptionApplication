@@ -8,11 +8,14 @@
 	StartupUri="Views/EncryptionApp.xaml">
 	<Application.Resources>
 		<ResourceDictionary>
-			<DataTemplate DataType="{x:Type viewModels:CaesarAlgorithmViewModel}">
-				<controls:CaesarAlgorithmControl />
+			<DataTemplate DataType="{x:Type viewModels:CaesarCipherViewModel}">
+				<controls:CaesarCipherControl />
 			</DataTemplate>
 			<DataTemplate DataType="{x:Type viewModels:SymmetricKeyViewModel}">
 				<controls:SymmetricKeyControl />
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type viewModels:SubstitutionCipherViewModel}">
+				<controls:SubstitutionCipherControl />
 			</DataTemplate>
 		</ResourceDictionary>
 	</Application.Resources>
