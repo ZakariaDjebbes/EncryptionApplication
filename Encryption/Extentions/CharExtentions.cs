@@ -6,10 +6,10 @@ namespace Encryption.Extentions
 	{
 
 		/// <summary>
-		/// Finds the index of a character in a <see cref="List{char}"/> ignoring case.
+		/// Finds the index of a <see cref="char"/> in a <see cref="List{char}"/> ignoring case.
 		/// </summary>
-		/// <param name="character">The character to look for</param>
-		/// <returns>The index of the character or -1 if it does not exist.</returns>
+		/// <param name="character">The <see cref="char"/> to look for</param>
+		/// <returns>The index of the <see cref="char"/> in the <see cref="List{char}"/> or -1 if it does not exist.</returns>
 		internal static int CaseInsensitiveIndexOf(this List<char> list, char character)
 		{
 			for (int i = 0; i < list.Count; i++)
@@ -24,10 +24,10 @@ namespace Encryption.Extentions
 		}
 
 		/// <summary>
-		/// Checks if a <see cref="List{char}"/> contains a character.
+		/// Checks if a <see cref="List{char}"/> contains a <see cref="char"/> ignoring case.
 		/// </summary>
-		/// <param name="character">The character to look for</param>
-		/// <returns>True if the list contains the character, false otherwise.</returns>
+		/// <param name="character">The <see cref="char"/> to look for</param>
+		/// <returns>True if the list contains the <see cref="char"/>, false otherwise.</returns>
 		internal static bool CaseInsensitiveContains(this List<char> list, char character)
 		{
 			for (int i = 0; i < list.Count; i++)

@@ -37,8 +37,8 @@
 		</Menu>
 		<Grid Margin="5">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="0.4*" />
-				<RowDefinition Height="0.6*" />
+				<RowDefinition Height="0.5*" />
+				<RowDefinition Height="0.5*" />
 				<RowDefinition Height="auto" />
 				<RowDefinition Height="auto" />
 			</Grid.RowDefinitions>
@@ -144,7 +144,7 @@
 					Grid.Column="0"
 					MaxHeight="40"
 					Margin="5,0"
-					Click="EncryptButton_Click"
+					Command="{Binding EncryptCommand}"
 					Content="Encrypt"
 					FontSize="13"
 					FontWeight="SemiBold" />
@@ -152,6 +152,7 @@
 					Grid.Column="1"
 					MaxHeight="40"
 					Margin="5,0"
+					Command="{Binding DecryptCommand}"
 					Content="Decrypt"
 					FontSize="13"
 					FontWeight="SemiBold" />

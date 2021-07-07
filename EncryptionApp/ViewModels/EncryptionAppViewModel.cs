@@ -1,13 +1,19 @@
-﻿using EncryptionApp.Commands;
+﻿using System.Threading.Tasks;
+using System.Windows;
+using EncryptionApp.Commands;
 
 namespace EncryptionApp.ViewModels
 {
 	internal class EncryptionAppViewModel : BaseViewModel
 	{
-		private BaseViewModel selectedViewModel;
+		private BaseCipherViewModel selectedViewModel;
 		private string inputText;
 		private float progress;
 		private double elapsedTime;
+
+		public DelegateCommand UpdateViewCommand => new(UpdateView);
+		public DelegateCommand EncryptCommand => new(Encrypt);
+		public DelegateCommand DecryptCommand => new(Decrypt);
 
 		public double ElapsedTime
 		{
@@ -29,7 +35,7 @@ namespace EncryptionApp.ViewModels
 			}
 		}
 
-		public BaseViewModel SelectedViewModel
+		public BaseCipherViewModel SelectedViewModel
 		{
 			get { return selectedViewModel; }
 			set
@@ -48,8 +54,6 @@ namespace EncryptionApp.ViewModels
 				OnPropertyChanged(nameof(InputText));
 			}
 		}
-
-		public DelegateCommand UpdateViewCommand => new(UpdateView);
 
 		public EncryptionAppViewModel()
 		{
@@ -72,6 +76,42 @@ namespace EncryptionApp.ViewModels
 			{
 				SelectedViewModel = new SubstitutionCipherViewModel(this);
 			}
+		}
+
+		private void Encrypt(object obj)
+		{
+			if (string.IsNullOrEmpty(InputText))
+			{
+				MessageBox.Show(
+					messageBoxText: "Enter something to encrypt first!",
+					caption: "Nothing to encrypt",
+					button: MessageBoxButton.OK,
+					icon: MessageBoxImage.Error);
+				return;
+			}
+
+			Task.Run(() =>
+			{
+				EncryptionResult = selectedViewModel.Encrypt(InputText);
+			});
+		}
+
+		private void Decrypt(object obj)
+		{
+			if (string.IsNullOrEmpty(InputText))
+			{
+				MessageBox.Show(
+					messageBoxText: "Enter something to decrypt first!",
+					caption: "Nothing to encrypt",
+					button: MessageBoxButton.OK,
+					icon: MessageBoxImage.Error);
+				return;
+			}
+
+			Task.Run(() =>
+			{
+				EncryptionResult = selectedViewModel.Decrypt(InputText);
+			});
 		}
 	}
 }

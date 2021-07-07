@@ -1,16 +1,19 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
+using Encryption;
 using Encryption.Substitution;
 using EncryptionApp.Commands;
 
 namespace EncryptionApp.ViewModels
 {
-	internal class SubstitutionCipherViewModel : BaseViewModel
+	internal class SubstitutionCipherViewModel : BaseCipherViewModel
 	{
 		private readonly EncryptionAppViewModel parent;
+		private readonly SubstitutionCipher substitutionCipher;
 
 		private ObservableCollection<SubstitutionTableEntry> entries;
 		private bool caseSpecific;
+
+		public DelegateCommand DeleteRowCommand => new(DeleteRow);
 
 		public bool CaseSpecific
 		{
@@ -42,9 +45,36 @@ namespace EncryptionApp.ViewModels
 			{
 				Entries.Add(new SubstitutionTableEntry((char)i, (char)(i + 1)));
 			}
+
+			substitutionCipher = new SubstitutionCipher(Entries, CaseSpecific);
+			substitutionCipher.EncryptionOngoing += EncryptionOngoing;
+			substitutionCipher.EncryptionFinished += EncryptionFinished;
 		}
 
-		public DelegateCommand DeleteRowCommand => new(DeleteRow);
+		public override CipherResult Encrypt(string input)
+		{
+			substitutionCipher.SubstitutionTableEntries = Entries;
+			substitutionCipher.CaseSpecific = CaseSpecific;
+
+			return substitutionCipher.Encrypt(input);
+		}
+
+		public override CipherResult Decrypt(string input)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		private void EncryptionOngoing(object sender, CipherEventArgs e)
+		{
+			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
+			parent.Progress = e.Pourcentage;
+		}
+
+		private void EncryptionFinished(object sender, CipherEventArgs e)
+		{
+			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
+			parent.Progress = e.Pourcentage;
+		}
 
 		private void DeleteRow(object parameter)
 		{

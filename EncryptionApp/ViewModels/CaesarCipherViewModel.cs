@@ -5,9 +5,9 @@ using Encryption.Caesar;
 
 namespace EncryptionApp.ViewModels
 {
-	internal class CaesarCipherViewModel : BaseViewModel
+	internal class CaesarCipherViewModel : BaseCipherViewModel
 	{
-		private readonly CaesarCipher caesarEncryption;
+		private readonly CaesarCipher caesarCipher;
 		private readonly EncryptionAppViewModel parent;
 		private int shift;
 		private bool keepCase;
@@ -63,13 +63,22 @@ namespace EncryptionApp.ViewModels
 			return alphabet.Length == alphabet.Distinct().Count();
 		}
 
-		public CipherResult Encrypt(string input)
+		public override CipherResult Encrypt(string input)
 		{
-			caesarEncryption.Alphabet = alphabet.ToCharArray();
-			caesarEncryption.Shift = shift;
-			caesarEncryption.KeepCase = keepCase;
+			caesarCipher.Alphabet = alphabet.ToCharArray();
+			caesarCipher.Shift = shift;
+			caesarCipher.KeepCase = keepCase;
 
-			return caesarEncryption.Encrypt(input);
+			return caesarCipher.Encrypt(input);
+		}
+
+		public override CipherResult Decrypt(string input)
+		{
+			caesarCipher.Alphabet = alphabet.ToCharArray();
+			caesarCipher.Shift = shift;
+			caesarCipher.KeepCase = keepCase;
+
+			return caesarCipher.Decrypt(input);
 		}
 
 		public CaesarCipherViewModel(EncryptionAppViewModel parent)
@@ -78,21 +87,20 @@ namespace EncryptionApp.ViewModels
 			Shift = 1;
 			KeepCase = true;
 			Alphabet = "abcdefghijklmnopqrstuvwxyz";
-			var zebi = Alphabet.ToCharArray();
-			caesarEncryption = new(Alphabet.ToCharArray(), Shift, KeepCase);
-			caesarEncryption.EncryptionOngoing += EncryptionOngoing;
-			caesarEncryption.EncryptionFinished += EncryptionFinished;
+			caesarCipher = new(Alphabet.ToCharArray(), Shift, KeepCase);
+			caesarCipher.EncryptionOngoing += EncryptionOngoing;
+			caesarCipher.EncryptionFinished += EncryptionFinished;
 		}
 
 		private void EncryptionOngoing(object sender, CipherEventArgs e)
 		{
-			parent.ElapsedTime = e.ElapsedSeconds;
+			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
 			parent.Progress = e.Pourcentage;
 		}
 
 		private void EncryptionFinished(object sender, CipherEventArgs e)
 		{
-			parent.ElapsedTime = e.ElapsedSeconds;
+			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
 			parent.Progress = e.Pourcentage;
 		}
 	}

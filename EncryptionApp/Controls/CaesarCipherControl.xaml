@@ -29,9 +29,7 @@
 			<Label Content="Shift" />
 			<TextBox
 				Grid.Column="1"
-				Width="120"
 				Height="25"
-				HorizontalAlignment="Left"
 				VerticalContentAlignment="Center"
 				Text="{Binding Shift}" />
 		</Grid>

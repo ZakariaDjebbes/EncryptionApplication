@@ -12,11 +12,11 @@ namespace Encryption.Caesar
 	/// </summary>
 	public class CaesarCipher : BaseCipher
 	{
-		private ICollection<char> alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+		private ICollection<char> alphabet;
 
 		/// <summary>
-		/// The Alphabet used to encrypt the input.
-		/// The Alphabest should not have duplicates, an exception is thrown otherwise.
+		/// The Alphabet used by <see cref="Encrypt(string)"/> to encrypt the input.
+		/// The Alphabet should not have duplicates, an <see cref="ArgumentException"/> is thrown otherwise.
 		/// <para>Default abcdefghijklmnopqrstuvwxyz</para>
 		/// </summary>
 		/// <exception cref="ArgumentException"></exception>
@@ -33,21 +33,24 @@ namespace Encryption.Caesar
 		}
 
 		/// <summary>
-		/// The Caesar shift applied by the encryption.
+		/// The Caesar shift applied by the <see cref="Encrypt(string)"/>.
 		/// <para>Default 1.</para>
 		/// </summary>
-		public int Shift { get; set; } = 1;
+		public int Shift { get; set; }
 
 		/// <summary>
-		/// Should the encryption keep casing.
+		/// Should the <see cref="Encrypt(string)"/> keep casing.
 		/// </summary>
-		public bool KeepCase { get; set; } = true;
+		public bool KeepCase { get; set; }
 
 		/// <summary>
-		/// Constructs a CaesarCipher with a default alphabet and shift.
+		/// Constructs a CaesarCipher with a default alphabet, shift and casing.
 		/// </summary>
 		public CaesarCipher()
 		{
+			Shift = 1;
+			KeepCase = true;
+			Alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 		}
 
 		/// <summary>
@@ -64,54 +67,102 @@ namespace Encryption.Caesar
 
 		/// <summary>
 		/// <para>
-		///		Encrypts an input string using the caesar cipher for a specific alphabet.
-		///		Characters that are not included in the alphabet will be kept as is.
+		///		Encrypts an input <see cref="string"/> using the caesar cipher for the <see cref="Alphabet"/>.
+		///		Characters that are not included in the <see cref="Alphabet"/> will be kept as is.
 		/// </para>
 		/// </summary>
-		/// <param name="inputText">The text to encrypt</param>
+		/// <param name="input">The <see cref="string"/> to encrypt</param>
 		/// <returns>
 		///		<see cref="CipherResult"/>
 		/// </returns>
-		public override CipherResult Encrypt(string inputText)
+		public override CipherResult Encrypt(string input)
 		{
-			if (inputText is null)
+			if (input is null)
 			{
-				throw new ArgumentNullException(nameof(inputText));
+				throw new ArgumentNullException(nameof(input));
 			}
 
 			var alphabetList = Alphabet.ToList();
-			StringBuilder builder = new StringBuilder();
+			StringBuilder builder = new();
 			Stopwatch watch = new();
 			watch.Start();
 			OnEncryptionStarted();
 
-			for (int i = 0; i < inputText.Length; i++)
+			for (int i = 0; i < input.Length; i++)
 			{
-				char res = inputText[i];
+				char res = input[i];
 
-				if (alphabetList.CaseInsensitiveContains(inputText[i]))
+				if (alphabetList.CaseInsensitiveContains(input[i]))
 				{
-					var index = alphabetList.CaseInsensitiveIndexOf(inputText[i]);
+					var index = alphabetList.CaseInsensitiveIndexOf(input[i]);
 					int offset = (index + Shift) % Alphabet.Count;
 					char newChar = alphabetList[offset];
 
-					if ((KeepCase && char.IsLower(inputText[i])) || !KeepCase)
+					if ((KeepCase && char.IsLower(input[i])) || !KeepCase)
 						res = char.ToLower(newChar);
 					else
 						res = char.ToUpper(newChar);
 				}
 
 				builder.Append(res);
-				OnEncryptionOngoing(i * 100 / inputText.Length, watch.Elapsed.TotalSeconds);
+				OnEncryptionOngoing(i * 100 / input.Length, watch.Elapsed);
 			}
 
-			OnEncryptionFinished(100, watch.Elapsed.TotalSeconds);
+			OnEncryptionFinished(100, watch.Elapsed);
 			watch.Stop();
-			EncryptionResult = new CipherResult(
-				inputText,
-				builder.ToString());
 
-			return EncryptionResult;
+			return new CipherResult(
+				input,
+				builder.ToString());
+		}
+
+		/// <summary>
+		///		Decrypts an input <see cref="string"/> using the caesar cipher for the <see cref="Alphabet"/>.
+		///		Characters that are not included in the <see cref="Alphabet"/> will be kept as is. 
+		/// </summary>
+		/// <param name="input">The <see cref="string"/> to decrypt</param>
+		/// <returns>
+		///		<see cref="CipherResult"/>
+		/// </returns>
+		public override CipherResult Decrypt(string input)
+		{
+			if (input is null)
+			{
+				throw new ArgumentNullException(nameof(input));
+			}
+
+			var alphabetList = Alphabet.ToList();
+			StringBuilder builder = new();
+			Stopwatch watch = new();
+			watch.Start();
+			OnEncryptionStarted();
+
+			for (int i = 0; i < input.Length; i++)
+			{
+				char res = input[i];
+
+				if (alphabetList.CaseInsensitiveContains(input[i]))
+				{
+					var index = alphabetList.CaseInsensitiveIndexOf(input[i]);
+					int offset = (index - Shift) % Alphabet.Count;
+					char newChar = alphabetList[offset];
+
+					if ((KeepCase && char.IsLower(input[i])) || !KeepCase)
+						res = char.ToLower(newChar);
+					else
+						res = char.ToUpper(newChar);
+				}
+
+				builder.Append(res);
+				OnEncryptionOngoing(i * 100 / input.Length, watch.Elapsed);
+			}
+
+			OnEncryptionFinished(100, watch.Elapsed);
+			watch.Stop();
+
+			return new CipherResult(
+				input,
+				builder.ToString());
 		}
 
 		private static bool IsAlphabetValid(char[] alphabet)

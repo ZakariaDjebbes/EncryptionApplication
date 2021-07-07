@@ -1,14 +1,13 @@
 ﻿using Encryption.Caesar;
 using NUnit.Framework;
 
-namespace EncryptionApp.Test
+namespace Encryption.Test
 {
 	[TestFixture]
 	internal class CaesarCipherTests
 	{
 		private CaesarCipher caesarEncryption;
 		private string input;
-
 
 		[OneTimeSetUp]
 		public void TestSetup()
