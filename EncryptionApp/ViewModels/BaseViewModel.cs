@@ -3,7 +3,7 @@ using Encryption;
 
 namespace EncryptionApp.ViewModels
 {
-	internal class BaseViewModel : INotifyPropertyChanged
+	internal abstract class BaseViewModel : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -12,13 +12,13 @@ namespace EncryptionApp.ViewModels
 
 		private CipherResult encryptionResult;
 
-		public CipherResult EncryptionResult
+		public CipherResult CipherResult
 		{
 			get { return encryptionResult; }
 			set
 			{
 				encryptionResult = value;
-				OnPropertyChanged(nameof(EncryptionResult));
+				OnPropertyChanged(nameof(CipherResult));
 			}
 		}
 	}

@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SymmetricKey\VigenereCipher.cs~RF25967e6.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />
   </ItemGroup>
 

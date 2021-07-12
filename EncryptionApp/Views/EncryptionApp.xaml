@@ -127,7 +127,7 @@
 					Background="Transparent"
 					BorderThickness="0"
 					IsReadOnly="True"
-					Text="{Binding EncryptionResult.EncryptedText}"
+					Text="{Binding CipherResult.Output}"
 					TextWrapping="Wrap" />
 			</Grid>
 			<Grid

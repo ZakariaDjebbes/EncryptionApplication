@@ -69,7 +69,7 @@ namespace EncryptionApp.ViewModels
 
 			if (parameter.ToString().Equals("Symmetric"))
 			{
-				SelectedViewModel = new SymmetricKeyViewModel();
+				SelectedViewModel = new SymmetricKeyViewModel(this);
 			}
 
 			if (parameter.ToString().Equals("Substitution"))
@@ -92,7 +92,7 @@ namespace EncryptionApp.ViewModels
 
 			Task.Run(() =>
 			{
-				EncryptionResult = selectedViewModel.Encrypt(InputText);
+				CipherResult = selectedViewModel.Encrypt(InputText);
 			});
 		}
 
@@ -110,7 +110,7 @@ namespace EncryptionApp.ViewModels
 
 			Task.Run(() =>
 			{
-				EncryptionResult = selectedViewModel.Decrypt(InputText);
+				CipherResult = selectedViewModel.Decrypt(InputText);
 			});
 		}
 	}

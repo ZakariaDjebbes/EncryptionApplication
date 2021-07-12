@@ -1,0 +1,59 @@
+﻿<UserControl
+	x:Class="EncryptionApp.Controls.SymmetricKeyControls.VigenereControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:EncryptionApp.Controls.SymmetricKeyControls"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	d:DesignHeight="450"
+	d:DesignWidth="800"
+	mc:Ignorable="d">
+	<StackPanel CanVerticallyScroll="True">
+		<Grid Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.4*" />
+				<ColumnDefinition Width="0.6*" />
+			</Grid.ColumnDefinitions>
+			<Label Content="Alphabet" ToolTip="The alphabet used by the cipher" />
+			<TextBox
+				Grid.Column="1"
+				Height="25"
+				VerticalContentAlignment="Center"
+				Text="{Binding Alphabet}" />
+		</Grid>
+		<Grid Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.4*" />
+				<ColumnDefinition Width="0.6*" />
+			</Grid.ColumnDefinitions>
+			<Label Content="Key" ToolTip="The key used by the cipher" />
+			<TextBox
+				Grid.Column="1"
+				Height="25"
+				VerticalContentAlignment="Center"
+				Text="{Binding Key}" />
+		</Grid>
+		<Grid Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.4*" />
+				<ColumnDefinition Width="0.6*" />
+			</Grid.ColumnDefinitions>
+			<Label Content="Maintain Case" ToolTip="Should the case be maintained? If this is unchecked, the output will always be lower case." />
+			<CheckBox
+				Grid.Column="1"
+				VerticalAlignment="Center"
+				IsChecked="{Binding KeepCase}" />
+		</Grid>
+		<Grid Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.4*" />
+				<ColumnDefinition Width="0.6*" />
+			</Grid.ColumnDefinitions>
+			<Label Content="Maintain Unknown Characters" ToolTip="Should characters unincluded in the alphabet be maintained? If this is unchecked, all characters that are not included in the alphabet wil be removed." />
+			<CheckBox
+				Grid.Column="1"
+				VerticalAlignment="Center"
+				IsChecked="{Binding MaintainUnknownCharacters}" />
+		</Grid>
+	</StackPanel>
+</UserControl>

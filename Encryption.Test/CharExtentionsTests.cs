@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using Encryption.Extentions;
 using NUnit.Framework;
 
@@ -8,78 +7,30 @@ namespace Encryption.Test
 	[TestFixture]
 	internal class CharExtentionsTests
 	{
-		private List<char> testData;
+		[TestCase("abcdefghijklmnopqrstuvwxyz", 'c', 2)]
+		[TestCase("abcdefghijklmnopqrstuvwxyz", 'Z', 25)]
+		[TestCase("AsString", 's', 1)]
+		[TestCase("AaAaCc", 'a', 0)]
+		[TestCase("abcdefghijklmnopqrstuvwxyz", '[', -1)]
+		[TestCase("", 'd', -1)]
+		public void TestCaseInsensitiveIndexOf(string list, char character, int index)
+			=> Assert.AreEqual(list.ToCharArray().CaseInsensitiveIndexOf(character), index);
 
-		[OneTimeSetUp]
-		public void Setup()
-		{
-			testData = "abcdefghijklmnopqrstuvwxy".ToList(); //Doesnt contain z
-		}
+		[TestCase("abcdefghijklmnopqrstuvwxyz", 'c', true)]
+		[TestCase("abcdefghijklmnopqrstuvwxyz", 'Z', true)]
+		[TestCase("Astring", 's', true)]
+		[TestCase("AaAaCc", 'a', true)]
+		[TestCase("abcdefghijklmnopqrstuvwxyz", '[', false)]
+		[TestCase("", 'd', false)]
+		public void TestCaseInsensitiveContains(string list, char character, bool contains)
+			=> Assert.AreEqual(list.ToCharArray().CaseInsensitiveContains(character), contains);
 
-		[Test]
-		public void TestCaseInsensitiveIndexOfLowerSuccess()
-		{
-			var res = testData.CaseInsensitiveIndexOf('c');
-
-			Assert.AreNotEqual(res, -1);
-			Assert.AreEqual(res, 2);
-		}
-
-		[Test]
-		public void TestCaseInsensitiveIndexOfUpperSuccess()
-		{
-			var res = testData.CaseInsensitiveIndexOf('C');
-
-			Assert.AreNotEqual(res, -1);
-			Assert.AreEqual(res, 2);
-		}
-
-		[Test]
-		public void TestCaseInsensitiveIndexOfLowerFail()
-		{
-			var res = testData.CaseInsensitiveIndexOf('z');
-
-			Assert.AreEqual(res, -1);
-		}
-
-		[Test]
-		public void TestCaseInsensitiveIndexOfUpperFail()
-		{
-			var res = testData.CaseInsensitiveIndexOf('Z');
-
-			Assert.AreEqual(res, -1);
-		}
-
-		[Test]
-		public void TestCaseInsensitiveContainsLowerSuccess()
-		{
-			var res = testData.CaseInsensitiveContains('c');
-
-			Assert.AreEqual(res, true);
-		}
-		
-		[Test]
-		public void TestCaseInsensitiveContainsUpperSuccess()
-		{
-			var res = testData.CaseInsensitiveContains('C');
-
-			Assert.AreEqual(res, true);
-		}
-
-		[Test]
-		public void TestCaseInsensitiveContainsLowerFail()
-		{
-			var res = testData.CaseInsensitiveContains('z');
-
-			Assert.AreEqual(res, false);
-		}
-
-		[Test]
-		public void TestCaseInsensitiveContainsUpperFail()
-		{
-			var res = testData.CaseInsensitiveContains('Z');
-
-			Assert.AreEqual(res, false);
-		}
+		[TestCase("Input", "input")]
+		[TestCase("", "")]
+		[TestCase("a", "a")]
+		[TestCase("AaA", "aaa")]
+		[TestCase("aAa", "aaa")]
+		public void TestToLower(string input, string lower)
+			=> Assert.AreEqual(input.ToCharArray().ToLower(), lower.ToCharArray());
 	}
 }

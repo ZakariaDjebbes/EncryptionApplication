@@ -8,7 +8,6 @@ namespace EncryptionApp.ViewModels
 	internal class CaesarCipherViewModel : BaseCipherViewModel
 	{
 		private readonly CaesarCipher caesarCipher;
-		private readonly EncryptionAppViewModel parent;
 		private int shift;
 		private bool keepCase;
 		private string alphabet;
@@ -53,16 +52,6 @@ namespace EncryptionApp.ViewModels
 			}
 		}
 
-		private bool IsAlphabetValid(char[] alphabet)
-		{
-			for (int i = 0; i < alphabet.Length; i++)
-			{
-				alphabet[i] = char.ToLower(alphabet[i]);
-			}
-
-			return alphabet.Length == alphabet.Distinct().Count();
-		}
-
 		public override CipherResult Encrypt(string input)
 		{
 			caesarCipher.Alphabet = alphabet.ToCharArray();
@@ -81,9 +70,8 @@ namespace EncryptionApp.ViewModels
 			return caesarCipher.Decrypt(input);
 		}
 
-		public CaesarCipherViewModel(EncryptionAppViewModel parent)
+		public CaesarCipherViewModel(EncryptionAppViewModel parent) : base(parent)
 		{
-			this.parent = parent;
 			Shift = 1;
 			KeepCase = true;
 			Alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -92,16 +80,14 @@ namespace EncryptionApp.ViewModels
 			caesarCipher.EncryptionFinished += EncryptionFinished;
 		}
 
-		private void EncryptionOngoing(object sender, CipherEventArgs e)
+		private bool IsAlphabetValid(char[] alphabet)
 		{
-			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
-			parent.Progress = e.Pourcentage;
-		}
+			for (int i = 0; i < alphabet.Length; i++)
+			{
+				alphabet[i] = char.ToLower(alphabet[i]);
+			}
 
-		private void EncryptionFinished(object sender, CipherEventArgs e)
-		{
-			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
-			parent.Progress = e.Pourcentage;
+			return alphabet.Length == alphabet.Distinct().Count();
 		}
 	}
 }

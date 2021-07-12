@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,9 @@ using Encryption.Extentions;
 
 namespace Encryption.Substitution
 {
+	/// <summary>
+	/// Provides an implementation of by character substitution cipher.
+	/// </summary>
 	public class SubstitutionCipher : BaseCipher
 	{
 		/// <summary>
@@ -14,12 +18,13 @@ namespace Encryption.Substitution
 		/// Default: Characters: a..z, Substitutions: b..{
 		/// </para>
 		/// </summary>
+		/// TODO : Ensure duplication isnt allowed
 		public ICollection<SubstitutionTableEntry> SubstitutionTableEntries { get; set; }
 
 		/// <summary>
 		/// Should the <see cref="Encrypt(string)"/> be case specific when substituting a <see cref="char"/>.
 		/// <para>
-		/// Default: false.
+		/// Default: <see langword="false"/>.
 		/// </para>
 		/// </summary>
 		public bool CaseSpecific { get; set; }
@@ -62,6 +67,11 @@ namespace Encryption.Substitution
 		/// <returns><see cref="CipherResult"/></returns>
 		public override CipherResult Encrypt(string input)
 		{
+			if (input is null)
+			{
+				throw new ArgumentNullException(nameof(input));
+			}
+
 			StringBuilder builder = new();
 			Stopwatch watch = new();
 			watch.Start();
@@ -112,6 +122,11 @@ namespace Encryption.Substitution
 		/// <returns><see cref="CipherResult"/></returns>
 		public override CipherResult Decrypt(string input)
 		{
+			if (input is null)
+			{
+				throw new ArgumentNullException(nameof(input));
+			}
+
 			StringBuilder builder = new();
 			Stopwatch watch = new();
 			watch.Start();

@@ -8,6 +8,7 @@
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Controls\SymmetricKeyControls\VigenereControl.xaml~RFbb39840.TMP" />
     <None Remove="Resources\about-icon.png" />
     <None Remove="Resources\main-icon.png" />
   </ItemGroup>

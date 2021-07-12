@@ -1,12 +1,32 @@
-﻿<UserControl x:Class="EncryptionApp.Controls.SymmetricKeyControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:EncryptionApp.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+﻿<UserControl
+	x:Class="EncryptionApp.Controls.SymmetricKeyControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:exts="clr-namespace:EncryptionApp.Extensions"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:vm="clr-namespace:EncryptionApp.ViewModels"
+	d:DesignHeight="450"
+	d:DesignWidth="800"
+	mc:Ignorable="d">
+	<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+		<StackPanel CanVerticallyScroll="True">
+			<Grid Margin="5">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="0.4*" />
+					<ColumnDefinition Width="0.6*" />
+				</Grid.ColumnDefinitions>
+				<Label Content="Algorithm" />
+				<ComboBox
+					x:Name="algorithmComboBox"
+					Grid.Column="1"
+					Height="25"
+					VerticalContentAlignment="Center"
+					ItemsSource="{exts:EnumBindingSource vm:SymmetricKeyViewModel+Algorithm}"
+					SelectedIndex="0"
+					SelectionChanged="ComboBox_SelectionChanged" />
+			</Grid>
+			<ContentControl Content="{Binding SelectedAlgorithm}" />
+		</StackPanel>
+	</ScrollViewer>
 </UserControl>

@@ -7,7 +7,6 @@ namespace EncryptionApp.ViewModels
 {
 	internal class SubstitutionCipherViewModel : BaseCipherViewModel
 	{
-		private readonly EncryptionAppViewModel parent;
 		private readonly SubstitutionCipher substitutionCipher;
 
 		private ObservableCollection<SubstitutionTableEntry> entries;
@@ -35,9 +34,8 @@ namespace EncryptionApp.ViewModels
 			}
 		}
 
-		public SubstitutionCipherViewModel(EncryptionAppViewModel parent)
+		public SubstitutionCipherViewModel(EncryptionAppViewModel parent) : base(parent)
 		{
-			this.parent = parent;
 			CaseSpecific = false;
 			Entries = new ObservableCollection<SubstitutionTableEntry>();
 
@@ -61,19 +59,10 @@ namespace EncryptionApp.ViewModels
 
 		public override CipherResult Decrypt(string input)
 		{
-			throw new System.NotImplementedException();
-		}
+			substitutionCipher.SubstitutionTableEntries = Entries;
+			substitutionCipher.CaseSpecific = CaseSpecific;
 
-		private void EncryptionOngoing(object sender, CipherEventArgs e)
-		{
-			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
-			parent.Progress = e.Pourcentage;
-		}
-
-		private void EncryptionFinished(object sender, CipherEventArgs e)
-		{
-			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
-			parent.Progress = e.Pourcentage;
+			return substitutionCipher.Decrypt(input);
 		}
 
 		private void DeleteRow(object parameter)

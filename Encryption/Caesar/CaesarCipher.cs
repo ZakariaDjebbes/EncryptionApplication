@@ -8,25 +8,27 @@ using Encryption.Extentions;
 namespace Encryption.Caesar
 {
 	/// <summary>
-	/// Caesar encryption class
+	/// Provides an implementation of the rotation cipher, also called caesar cipher.
 	/// </summary>
 	public class CaesarCipher : BaseCipher
 	{
-		private ICollection<char> alphabet;
+		private IList<char> alphabet;
 
 		/// <summary>
-		/// The Alphabet used by <see cref="Encrypt(string)"/> to encrypt the input.
+		/// The Alphabet <see cref="IList{T}"/> used by <see cref="Encrypt(string)"/> to encrypt the input.
 		/// The Alphabet should not have duplicates, an <see cref="ArgumentException"/> is thrown otherwise.
-		/// <para>Default abcdefghijklmnopqrstuvwxyz</para>
+		/// <para>Default: abcdefghijklmnopqrstuvwxyz</para>
 		/// </summary>
 		/// <exception cref="ArgumentException"></exception>
-		public ICollection<char> Alphabet
+		public IList<char> Alphabet
 		{
 			get => alphabet;
 			set
 			{
 				if (!IsAlphabetValid(value.ToArray()))
-					throw new ArgumentException("Cannot have duplicates in alphabet", nameof(Alphabet));
+				{
+					throw new ArgumentException("Alphabet must contain atleast 2 characters and have no duplicate characters (ignoring case).", nameof(Alphabet));
+				}
 
 				alphabet = value;
 			}
@@ -34,12 +36,15 @@ namespace Encryption.Caesar
 
 		/// <summary>
 		/// The Caesar shift applied by the <see cref="Encrypt(string)"/>.
-		/// <para>Default 1.</para>
+		/// <para>Default: 1.</para>
 		/// </summary>
 		public int Shift { get; set; }
 
 		/// <summary>
 		/// Should the <see cref="Encrypt(string)"/> keep casing.
+		/// <para>
+		/// Default: <see langword="true"/>.
+		/// </para>
 		/// </summary>
 		public bool KeepCase { get; set; }
 
@@ -56,9 +61,9 @@ namespace Encryption.Caesar
 		/// <summary>
 		/// Constructs a CaesarCipher object with a user defined alphabet and shift.
 		/// </summary>
-		/// <param name="alphabet">The alphabet used for shifting</param>
+		/// <param name="alphabet">The alphabet <see cref="IList{T}"/> used for shifting</param>
 		/// <param name="shift">Caesar shift</param>
-		public CaesarCipher(ICollection<char> alphabet, int shift, bool caseSpecific)
+		public CaesarCipher(IList<char> alphabet, int shift, bool caseSpecific)
 		{
 			Alphabet = alphabet;
 			Shift = shift;
@@ -82,7 +87,6 @@ namespace Encryption.Caesar
 				throw new ArgumentNullException(nameof(input));
 			}
 
-			var alphabetList = Alphabet.ToList();
 			StringBuilder builder = new();
 			Stopwatch watch = new();
 			watch.Start();
@@ -92,16 +96,16 @@ namespace Encryption.Caesar
 			{
 				char res = input[i];
 
-				if (alphabetList.CaseInsensitiveContains(input[i]))
+				if (Alphabet.CaseInsensitiveContains(input[i]))
 				{
-					var index = alphabetList.CaseInsensitiveIndexOf(input[i]);
-					int offset = (index + Shift) % Alphabet.Count;
-					char newChar = alphabetList[offset];
+					var index = Alphabet.CaseInsensitiveIndexOf(input[i]);
+					int offset = ((index + Shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
+					char newChar = Alphabet[offset];
 
-					if ((KeepCase && char.IsLower(input[i])) || !KeepCase)
-						res = char.ToLower(newChar);
-					else
+					if (KeepCase && char.IsUpper(input[i]))
 						res = char.ToUpper(newChar);
+					else
+						res = char.ToLower(newChar);
 				}
 
 				builder.Append(res);
@@ -118,7 +122,7 @@ namespace Encryption.Caesar
 
 		/// <summary>
 		///		Decrypts an input <see cref="string"/> using the caesar cipher for the <see cref="Alphabet"/>.
-		///		Characters that are not included in the <see cref="Alphabet"/> will be kept as is. 
+		///		Characters that are not included in the <see cref="Alphabet"/> will be kept as is.
 		/// </summary>
 		/// <param name="input">The <see cref="string"/> to decrypt</param>
 		/// <returns>
@@ -131,7 +135,6 @@ namespace Encryption.Caesar
 				throw new ArgumentNullException(nameof(input));
 			}
 
-			var alphabetList = Alphabet.ToList();
 			StringBuilder builder = new();
 			Stopwatch watch = new();
 			watch.Start();
@@ -141,16 +144,17 @@ namespace Encryption.Caesar
 			{
 				char res = input[i];
 
-				if (alphabetList.CaseInsensitiveContains(input[i]))
+				if (Alphabet.CaseInsensitiveContains(input[i]))
 				{
-					var index = alphabetList.CaseInsensitiveIndexOf(input[i]);
-					int offset = (index - Shift) % Alphabet.Count;
-					char newChar = alphabetList[offset];
+					var index = Alphabet.CaseInsensitiveIndexOf(input[i]);
+					// C# mod things, unlucky
+					int offset = ((index - Shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
+					char newChar = Alphabet[offset];
 
-					if ((KeepCase && char.IsLower(input[i])) || !KeepCase)
-						res = char.ToLower(newChar);
-					else
+					if (KeepCase && char.IsUpper(input[i]))
 						res = char.ToUpper(newChar);
+					else
+						res = char.ToLower(newChar);
 				}
 
 				builder.Append(res);
@@ -167,6 +171,11 @@ namespace Encryption.Caesar
 
 		private static bool IsAlphabetValid(char[] alphabet)
 		{
+			// Alphabet must contain at least two characters
+			if (alphabet.Length < 2)
+				return false;
+
+			// Alphabet must not contain any duplicated characters, even if the case of characters isn't specific.
 			for (int i = 0; i < alphabet.Length; i++)
 			{
 				alphabet[i] = char.ToLower(alphabet[i]);

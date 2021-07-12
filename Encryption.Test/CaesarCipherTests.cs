@@ -1,4 +1,5 @@
-﻿using Encryption.Caesar;
+﻿using System;
+using Encryption.Caesar;
 using NUnit.Framework;
 
 namespace Encryption.Test
@@ -7,127 +8,56 @@ namespace Encryption.Test
 	internal class CaesarCipherTests
 	{
 		private CaesarCipher caesarEncryption;
-		private string input;
 
 		[OneTimeSetUp]
 		public void TestSetup()
 		{
 			caesarEncryption = new();
-			input = "TestInput";
-			caesarEncryption.Alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 		}
 
-		[Test]
-		public void TestShiftOneKeepCaseSuccess()
+		[TestCase("This message shall be secret!", "Aopz tlzzhnl zohss il zljyla!", "abcdefghijklmnopqrstuvwxyz", 7, true)]
+		[TestCase("This message shall be secret!", "aopz tlzzhnl zohss il zljyla!", "abcdefghijklmnopqrstuvwxyz", 7, false)]
+		[TestCase("This message shall be secret!", "Lzak ewkksyw kzsdd tw kwujwl!", "abcdefghijklmnopqrstuvwxyz", 18, true)]
+		[TestCase("This message shall be secret!", "pdeo iaooxca odxhh ya oaznapw", "abcdefghijklmnopqrstuvwxyz!", 23, false)]
+		[TestCase("Another Message, but STILL secret!", "Frtylhw Qhxxfihs gzy XYNPP xh:whym", "abcdefg:)h!ijklmn,opqrstuvwxyz", 155, true)]
+		[TestCase("abc", "abc", "abc", 3000, true)]
+		public void TestEncrypt(string input, string expected, string alphabet, int shift, bool keepCase)
 		{
-			string output = "UftuJoqvu";
-
-			caesarEncryption.Shift = 1;
-			caesarEncryption.KeepCase = true;
+			caesarEncryption.Shift = shift;
+			caesarEncryption.KeepCase = keepCase;
+			caesarEncryption.Alphabet = alphabet.ToCharArray();
 
 			var res = caesarEncryption.Encrypt(input);
 
-			Assert.AreEqual(res.EncryptedText, output);
-			Assert.AreEqual(res.OriginalText, input);
+			Assert.AreEqual(res.Output, expected);
+			Assert.AreEqual(res.Input, input);
+		}
+
+		[TestCase("This message shall be secret!", "Aopz tlzzhnl zohss il zljyla!", "abcdefghijklmnopqrstuvwxyz", 7, true)]
+		[TestCase("this message shall be secret!", "aopz tlzzhnl zohss il zljyla!", "abcdefghijklmnopqrstuvwxyz", 7, false)]
+		[TestCase("This message shall be secret!", "Lzak ewkksyw kzsdd tw kwujwl!", "abcdefghijklmnopqrstuvwxyz", 18, true)]
+		[TestCase("this message shall be secret!", "pdeo iaooxca odxhh ya oaznapw", "abcdefghijklmnopqrstuvwxyz!", 23, false)]
+		[TestCase("Another Message, but STILL secret!", "Frtylhw Qhxxfihs gzy XYNPP xh:whym", "abcdefg:)h!ijklmn,opqrstuvwxyz", 155, true)]
+		[TestCase("abc", "abc", "abc", 3000, true)]
+		public void TestDecrypt(string expected, string input, string alphabet, int shift, bool keepCase)
+		{
+			caesarEncryption.Shift = shift;
+			caesarEncryption.KeepCase = keepCase;
+			caesarEncryption.Alphabet = alphabet.ToCharArray();
+
+			var res = caesarEncryption.Decrypt(input);
+
+			Assert.AreEqual(res.Output, expected);
+			Assert.AreEqual(res.Input, input);
 		}
 
 		[Test]
-		public void TestShiftFiveKeepCaseSuccess()
+		[TestCase("", typeof(ArgumentException), Description = "The alphabet should not be empty")]
+		[TestCase("Aca", typeof(ArgumentException), Description = "The alphabet should not contain duplications")]
+		[TestCase("a", typeof(ArgumentException), Description = "The alphabet should contain atleast two distinct characters")]
+		public void TestSetAlphabet(string alphabet, Type exception)
 		{
-			string output = "YjxyNsuzy";
-
-			caesarEncryption.KeepCase = true;
-			caesarEncryption.Shift = 5;
-
-			var res = caesarEncryption.Encrypt(input);
-
-			Assert.AreEqual(res.EncryptedText, output);
-			Assert.AreEqual(res.OriginalText, input);
-		}
-
-		[Test]
-		public void TestShiftFiveKeepCaseFail()
-		{
-			string output = "YjxyNsuza";
-
-			caesarEncryption.KeepCase = true;
-			caesarEncryption.Shift = 5;
-
-			var res = caesarEncryption.Encrypt(input);
-
-			Assert.AreNotEqual(res.EncryptedText, output);
-			Assert.AreEqual(res.OriginalText, input);
-		}
-
-		[Test]
-		public void TestShiftOneKeepCaseFail()
-		{
-			string output = "UftuJbqvu";
-
-			caesarEncryption.Shift = 1;
-			caesarEncryption.KeepCase = true;
-
-			var res = caesarEncryption.Encrypt(input);
-
-			Assert.AreNotEqual(res.EncryptedText, output);
-			Assert.AreEqual(res.OriginalText, input);
-		}
-
-		[Test]
-		public void TestShiftOneNoKeepCaseSuccess()
-		{
-			string output = "uftujoqvu";
-
-			caesarEncryption.Shift = 1;
-			caesarEncryption.KeepCase = false;
-
-			var res = caesarEncryption.Encrypt(input);
-
-			Assert.AreEqual(res.EncryptedText, output);
-			Assert.AreEqual(res.OriginalText, input);
-		}
-
-		[Test]
-		public void TestShiftOneNoKeepCaseFail()
-		{
-			string output = "uftujoqgu";
-
-			caesarEncryption.Shift = 1;
-			caesarEncryption.KeepCase = false;
-
-			var res = caesarEncryption.Encrypt(input);
-
-			Assert.AreNotEqual(res.EncryptedText, output);
-			Assert.AreEqual(res.OriginalText, input);
-		}
-
-
-		[Test]
-		public void TestShiftFiveNoKeepCaseSuccess()
-		{
-			string output = "yjxynsuzy";
-
-			caesarEncryption.Shift = 5;
-			caesarEncryption.KeepCase = false;
-
-			var res = caesarEncryption.Encrypt(input);
-
-			Assert.AreEqual(res.EncryptedText, output);
-			Assert.AreEqual(res.OriginalText, input);
-		}
-
-		[Test]
-		public void TestShiftFiveNoKeepCaseFail()
-		{
-			string output = "yjxynsrzy";
-
-			caesarEncryption.Shift = 5;
-			caesarEncryption.KeepCase = false;
-
-			var res = caesarEncryption.Encrypt(input);
-
-			Assert.AreNotEqual(res.EncryptedText, output);
-			Assert.AreEqual(res.OriginalText, input);
+			Assert.Throws(exception, () => { caesarEncryption.Alphabet = alphabet.ToCharArray(); });
 		}
 	}
 }

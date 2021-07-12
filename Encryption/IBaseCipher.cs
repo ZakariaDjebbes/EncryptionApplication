@@ -2,6 +2,9 @@
 
 namespace Encryption
 {
+	/// <summary>
+	/// The interface for all cipher classes that either implement <see cref="IBaseCipher"/> or extend <see cref="BaseCipher"/>
+	/// </summary>
 	public interface IBaseCipher
 	{
 		/// <summary>

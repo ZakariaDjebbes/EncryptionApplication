@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
+using EncryptionApp.ViewModels;
 
 namespace EncryptionApp.Controls
 {
-	/// <summary>
-	/// Interaction logic for SymmetricKeyControl.xaml
-	/// </summary>
 	public partial class SymmetricKeyControl : UserControl
 	{
+		//private readonly SymmetricKeyViewModel model = new(null);
+
 		public SymmetricKeyControl()
 		{
 			InitializeComponent();
+			//DataContext = model;
+		}
+
+		private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			//if (model.UpdateAlgorithmCommand.CanExecute(algorithmComboBox.SelectedItem))
+			//{
+			//	model.UpdateAlgorithmCommand.Execute(algorithmComboBox.SelectedItem);
+			//}
 		}
 	}
 }

@@ -3,20 +3,35 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:controls="clr-namespace:EncryptionApp.Controls"
-	xmlns:local="clr-namespace:EncryptionApp"
+	xmlns:symmetricControls="clr-namespace:EncryptionApp.Controls.SymmetricKeyControls"
+	xmlns:symmetricVms="clr-namespace:EncryptionApp.ViewModels.SymmetricKeyViewModels"
 	xmlns:viewModels="clr-namespace:EncryptionApp.ViewModels"
 	StartupUri="Views/EncryptionApp.xaml">
 	<Application.Resources>
 		<ResourceDictionary>
-			<DataTemplate DataType="{x:Type viewModels:CaesarCipherViewModel}">
-				<controls:CaesarCipherControl />
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type viewModels:SymmetricKeyViewModel}">
-				<controls:SymmetricKeyControl />
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type viewModels:SubstitutionCipherViewModel}">
-				<controls:SubstitutionCipherControl />
-			</DataTemplate>
+			<ResourceDictionary.MergedDictionaries>
+				<!--  Main Resources for EncryptionApp.xaml  -->
+				<ResourceDictionary>
+					<DataTemplate DataType="{x:Type viewModels:CaesarCipherViewModel}">
+						<controls:CaesarCipherControl />
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type viewModels:SymmetricKeyViewModel}">
+						<controls:SymmetricKeyControl />
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type viewModels:SubstitutionCipherViewModel}">
+						<controls:SubstitutionCipherControl />
+					</DataTemplate>
+				</ResourceDictionary>
+				<ResourceDictionary>
+					<!--  Resources for SymmetricKeyControl.xaml  -->
+					<DataTemplate DataType="{x:Type symmetricVms:TrilitereViewModel}">
+						<symmetricControls:TrilitereControl />
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type symmetricVms:VigenereViewModel}">
+						<symmetricControls:VigenereControl />
+					</DataTemplate>
+				</ResourceDictionary>
+			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>
