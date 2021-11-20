@@ -34,7 +34,7 @@ namespace Encryption.SymmetricKey
 
 		/// <summary>
 		/// The key used by <see cref="Encrypt(string)"/> and <see cref="Decrypt(string)"/>.
-		/// The key cannot bet empty and all its characters must be included in the alphabet,
+		/// The key cannot be empty and all its characters must be included in the alphabet,
 		/// an <see cref="ArgumentException"/> is thrown otherwise
 		/// </summary>
 		public string Key
@@ -74,6 +74,7 @@ namespace Encryption.SymmetricKey
 		/// <param name="key">The key used by <see cref="Encrypt(string)"/> and <see cref="Decrypt(string)"/>.</param>
 		public VigenereCipher(string key)
 		{
+			Alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 			Key = key;
 		}
 

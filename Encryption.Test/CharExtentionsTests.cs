@@ -14,7 +14,7 @@ namespace Encryption.Test
 		[TestCase("abcdefghijklmnopqrstuvwxyz", '[', -1)]
 		[TestCase("", 'd', -1)]
 		public void TestCaseInsensitiveIndexOf(string list, char character, int index)
-			=> Assert.AreEqual(list.ToCharArray().CaseInsensitiveIndexOf(character), index);
+			=> Assert.AreEqual(index, list.ToCharArray().CaseInsensitiveIndexOf(character));
 
 		[TestCase("abcdefghijklmnopqrstuvwxyz", 'c', true)]
 		[TestCase("abcdefghijklmnopqrstuvwxyz", 'Z', true)]
@@ -23,7 +23,7 @@ namespace Encryption.Test
 		[TestCase("abcdefghijklmnopqrstuvwxyz", '[', false)]
 		[TestCase("", 'd', false)]
 		public void TestCaseInsensitiveContains(string list, char character, bool contains)
-			=> Assert.AreEqual(list.ToCharArray().CaseInsensitiveContains(character), contains);
+			=> Assert.AreEqual(contains, list.ToCharArray().CaseInsensitiveContains(character));
 
 		[TestCase("Input", "input")]
 		[TestCase("", "")]
@@ -31,6 +31,6 @@ namespace Encryption.Test
 		[TestCase("AaA", "aaa")]
 		[TestCase("aAa", "aaa")]
 		public void TestToLower(string input, string lower)
-			=> Assert.AreEqual(input.ToCharArray().ToLower(), lower.ToCharArray());
+			=> Assert.AreEqual(lower.ToCharArray(), input.ToCharArray().ToLower());
 	}
 }

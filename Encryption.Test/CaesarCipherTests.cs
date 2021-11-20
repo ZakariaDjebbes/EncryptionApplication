@@ -29,8 +29,8 @@ namespace Encryption.Test
 
 			var res = caesarEncryption.Encrypt(input);
 
-			Assert.AreEqual(res.Output, expected);
-			Assert.AreEqual(res.Input, input);
+			Assert.AreEqual(expected, res.Output);
+			Assert.AreEqual(input, res.Input);
 		}
 
 		[TestCase("This message shall be secret!", "Aopz tlzzhnl zohss il zljyla!", "abcdefghijklmnopqrstuvwxyz", 7, true)]
@@ -47,17 +47,27 @@ namespace Encryption.Test
 
 			var res = caesarEncryption.Decrypt(input);
 
-			Assert.AreEqual(res.Output, expected);
-			Assert.AreEqual(res.Input, input);
+			Assert.AreEqual(expected, res.Output);
+			Assert.AreEqual(input, res.Input);
 		}
 
-		[Test]
 		[TestCase("", typeof(ArgumentException), Description = "The alphabet should not be empty")]
 		[TestCase("Aca", typeof(ArgumentException), Description = "The alphabet should not contain duplications")]
 		[TestCase("a", typeof(ArgumentException), Description = "The alphabet should contain atleast two distinct characters")]
+		[TestCase("abcdefghijklmnopqrstuvwxyz", null)]
 		public void TestSetAlphabet(string alphabet, Type exception)
 		{
-			Assert.Throws(exception, () => { caesarEncryption.Alphabet = alphabet.ToCharArray(); });
+			if (exception != null)
+			{
+				Assert.Throws(exception, () => { caesarEncryption.Alphabet = alphabet.ToCharArray(); });
+			}
+			else
+			{
+				Assert.DoesNotThrow(delegate
+				{
+					caesarEncryption.Alphabet = alphabet.ToCharArray();
+				});
+			}
 		}
 	}
 }
