@@ -14,7 +14,7 @@ namespace EncryptionApp.ViewModels
 
 		public CipherResult CipherResult
 		{
-			get { return encryptionResult; }
+			get => encryptionResult;
 			set
 			{
 				encryptionResult = value;

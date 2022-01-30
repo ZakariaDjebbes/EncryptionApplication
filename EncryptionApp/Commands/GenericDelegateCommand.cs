@@ -5,37 +5,25 @@ namespace EncryptionApp.Commands
 {
 	public class DelegateCommand<T> : ICommand
 	{
-		private readonly Predicate<T> _canExecute;
-		private readonly Action<T> _execute;
+		private readonly Predicate<T> canExecute;
+		private readonly Action<T> execute;
 
 		public event EventHandler CanExecuteChanged;
 
 		public DelegateCommand(Action<T> execute, Predicate<T> canExecute)
 		{
-			_execute = execute;
-			_canExecute = canExecute;
+			this.execute = execute;
+			this.canExecute = canExecute;
 		}
 
-		public DelegateCommand(Action<T> execute) : this(execute, null) { }
-
-		public virtual bool CanExecute(object parameter)
+		public DelegateCommand(Action<T> execute) : this(execute, null)
 		{
-			if (_canExecute == null)
-			{
-				return true;
-			}
-
-			return _canExecute((T)parameter);
 		}
 
-		public void Execute(object parameter)
-		{
-			_execute((T)parameter);
-		}
+		public virtual bool CanExecute(object parameter) => canExecute == null || canExecute((T)parameter);
 
-		public void RaiseCanExecuteChanged()
-		{
-			CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-		}
+		public void Execute(object parameter) => execute((T)parameter);
+
+		public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 	}
 }

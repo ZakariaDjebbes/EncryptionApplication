@@ -12,7 +12,7 @@ namespace Encryption.Test
 		[OneTimeSetUp]
 		public void TestSetup()
 		{
-			caesarEncryption = new();
+			caesarEncryption = new CaesarCipher();
 		}
 
 		[TestCase("This message shall be secret!", "Aopz tlzzhnl zohss il zljyla!", "abcdefghijklmnopqrstuvwxyz", 7, true)]

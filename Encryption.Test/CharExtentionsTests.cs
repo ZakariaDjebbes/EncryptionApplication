@@ -1,5 +1,4 @@
-﻿using System;
-using Encryption.Extentions;
+﻿using Encryption.Extentions;
 using NUnit.Framework;
 
 namespace Encryption.Test

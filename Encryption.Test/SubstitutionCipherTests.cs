@@ -12,7 +12,7 @@ namespace Encryption.Test
 		[OneTimeSetUp]
 		public void TestSetup()
 		{
-			substitutionCipher = new();
+			substitutionCipher = new SubstitutionCipher();
 		}
 
 		public void TestEncrypt(string input, string output, string characters, string substitutions, bool caseSpecific)

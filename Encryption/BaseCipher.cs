@@ -14,7 +14,7 @@ namespace Encryption
 		public event EventHandler<CipherEventArgs> EncryptionFinished;
 
 		protected void OnEncryptionStarted()
-			=> EncryptionStarted?.Invoke(this, new EventArgs());
+			=> EncryptionStarted?.Invoke(this, EventArgs.Empty);
 
 		protected void OnEncryptionOngoing(float pourcentage, TimeSpan encryptionTime)
 			=> EncryptionOngoing?.Invoke(this, new CipherEventArgs(pourcentage, encryptionTime));

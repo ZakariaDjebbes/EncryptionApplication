@@ -5,7 +5,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:exts="clr-namespace:EncryptionApp.Extensions"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:vm="clr-namespace:EncryptionApp.ViewModels"
+	xmlns:vm="clr-namespace:EncryptionApp.ViewModels" d:DataContext="{d:DesignInstance Type=vm:SymmetricKeyViewModel}"
 	d:DesignHeight="450"
 	d:DesignWidth="800"
 	mc:Ignorable="d">
@@ -23,8 +23,7 @@
 					Height="25"
 					VerticalContentAlignment="Center"
 					ItemsSource="{exts:EnumBindingSource vm:SymmetricKeyViewModel+Algorithm}"
-					SelectedIndex="0"
-					SelectionChanged="ComboBox_SelectionChanged" />
+					SelectedItem="{Binding SelectedComboBoxAlgorithm}" />
 			</Grid>
 			<ContentControl Content="{Binding SelectedAlgorithm}" />
 		</StackPanel>

@@ -16,7 +16,7 @@ namespace EncryptionApp.ViewModels
 
 		public bool CaseSpecific
 		{
-			get { return caseSpecific; }
+			get => caseSpecific;
 			set
 			{
 				caseSpecific = value;
@@ -26,7 +26,7 @@ namespace EncryptionApp.ViewModels
 
 		public ObservableCollection<SubstitutionTableEntry> Entries
 		{
-			get { return entries; }
+			get => entries;
 			set
 			{
 				entries = value;
@@ -39,7 +39,7 @@ namespace EncryptionApp.ViewModels
 			CaseSpecific = false;
 			Entries = new ObservableCollection<SubstitutionTableEntry>();
 
-			for (int i = 97; i <= 122; i++)
+			for (var i = 97; i <= 122; i++)
 			{
 				Entries.Add(new SubstitutionTableEntry((char)i, (char)(i + 1)));
 			}

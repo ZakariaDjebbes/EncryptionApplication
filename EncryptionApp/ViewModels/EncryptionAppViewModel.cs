@@ -17,7 +17,7 @@ namespace EncryptionApp.ViewModels
 
 		public double ElapsedTime
 		{
-			get { return elapsedTime; }
+			get => elapsedTime;
 			set
 			{
 				elapsedTime = value;
@@ -27,7 +27,7 @@ namespace EncryptionApp.ViewModels
 
 		public float Progress
 		{
-			get { return progress; }
+			get => progress;
 			set
 			{
 				progress = value;
@@ -37,7 +37,7 @@ namespace EncryptionApp.ViewModels
 
 		public BaseCipherViewModel SelectedViewModel
 		{
-			get { return selectedViewModel; }
+			get => selectedViewModel;
 			set
 			{
 				selectedViewModel = value;
@@ -47,7 +47,7 @@ namespace EncryptionApp.ViewModels
 
 		public string InputText
 		{
-			get { return inputText; }
+			get => inputText;
 			set
 			{
 				inputText = value;
@@ -62,20 +62,13 @@ namespace EncryptionApp.ViewModels
 
 		private void UpdateView(object parameter)
 		{
-			if (parameter.ToString().Equals("Caesar"))
+			SelectedViewModel = parameter.ToString()! switch
 			{
-				SelectedViewModel = new CaesarCipherViewModel(this);
-			}
-
-			if (parameter.ToString().Equals("Symmetric"))
-			{
-				SelectedViewModel = new SymmetricKeyViewModel(this);
-			}
-
-			if (parameter.ToString().Equals("Substitution"))
-			{
-				SelectedViewModel = new SubstitutionCipherViewModel(this);
-			}
+				"Caesar" => new CaesarCipherViewModel(this),
+				"Symmetric" => new SymmetricKeyViewModel(this),
+				"Substitution" => new SubstitutionCipherViewModel(this),
+				_ => SelectedViewModel
+			};
 		}
 
 		private void Encrypt(object obj)
@@ -83,10 +76,10 @@ namespace EncryptionApp.ViewModels
 			if (string.IsNullOrEmpty(InputText))
 			{
 				MessageBox.Show(
-					messageBoxText: "Enter something to encrypt first!",
-					caption: "Nothing to encrypt",
-					button: MessageBoxButton.OK,
-					icon: MessageBoxImage.Error);
+					"Enter something to encrypt first!",
+					"Nothing to encrypt",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
 				return;
 			}
 
@@ -101,10 +94,10 @@ namespace EncryptionApp.ViewModels
 			if (string.IsNullOrEmpty(InputText))
 			{
 				MessageBox.Show(
-					messageBoxText: "Enter something to decrypt first!",
-					caption: "Nothing to encrypt",
-					button: MessageBoxButton.OK,
-					icon: MessageBoxImage.Error);
+					"Enter something to decrypt first!",
+					"Nothing to encrypt",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
 				return;
 			}
 

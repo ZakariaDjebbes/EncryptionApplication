@@ -20,7 +20,7 @@ namespace Encryption.Substitution
 		/// </summary>
 		public char Substitution
 		{
-			get { return substitution; }
+			get => substitution;
 			set
 			{
 				substitution = value;
@@ -33,7 +33,7 @@ namespace Encryption.Substitution
 		/// </summary>
 		public char Character
 		{
-			get { return character; }
+			get => character;
 			set
 			{
 				character = value;

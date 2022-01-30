@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using Encryption;
-using EncryptionApp.Commands;
 using EncryptionApp.ViewModels.SymmetricKeyViewModels;
 
 namespace EncryptionApp.ViewModels
@@ -12,12 +11,22 @@ namespace EncryptionApp.ViewModels
 		{
 			Vigenere,
 			Trilitere,
-			AES
+			Aes
 		}
 
 		private BaseCipherViewModel selectedAlgorithm;
+		private Algorithm selectedComboBoxAlgorithm;
 
-		public DelegateCommand UpdateAlgorithmCommand => new(UpdateAlgorithm);
+		public Algorithm SelectedComboBoxAlgorithm
+		{
+			get => selectedComboBoxAlgorithm;
+			set
+			{
+				selectedComboBoxAlgorithm = value;
+				UpdateAlgorithm(value);
+				OnPropertyChanged(nameof(SelectedComboBoxAlgorithm));
+			}
+		}
 
 		public BaseCipherViewModel SelectedAlgorithm
 		{
@@ -42,26 +51,29 @@ namespace EncryptionApp.ViewModels
 
 		private void UpdateAlgorithm(object obj)
 		{
-			if (Enum.TryParse(obj.ToString(), true, out Algorithm algorithm))
+			if (!Enum.TryParse(obj.ToString(), true, out Algorithm algorithm)) return;
+
+			switch (algorithm)
 			{
-				switch (algorithm)
-				{
-					case Algorithm.Vigenere:
-						SelectedAlgorithm = new VigenereViewModel(parent);
-						break;
+				case Algorithm.Vigenere:
+					SelectedAlgorithm = new VigenereViewModel(Parent);
+					break;
 
-					case Algorithm.Trilitere:
-						SelectedAlgorithm = new TrilitereViewModel(parent);
-						break;
+				case Algorithm.Trilitere:
+					SelectedAlgorithm = new TrilitereViewModel(Parent);
+					break;
 
-					default:
-						MessageBox.Show(
-							$"The algorithm {algorithm} is not yet implemented.",
-							"Unimplemented Algorithm",
-							MessageBoxButton.OK,
-							MessageBoxImage.Information);
-						break;
-				}
+				case Algorithm.Aes:
+					SelectedAlgorithm = new AesViewModel(Parent);
+					break;
+
+				default:
+					MessageBox.Show(
+						$"The algorithm {algorithm} is not yet implemented.",
+						"Unimplemented Algorithm",
+						MessageBoxButton.OK,
+						MessageBoxImage.Information);
+					break;
 			}
 		}
 	}

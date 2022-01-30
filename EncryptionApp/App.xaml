@@ -30,6 +30,9 @@
 					<DataTemplate DataType="{x:Type symmetricVms:VigenereViewModel}">
 						<symmetricControls:VigenereControl />
 					</DataTemplate>
+					<DataTemplate DataType="{x:Type symmetricVms:AesViewModel}">
+						<symmetricControls:AesControl />
+					</DataTemplate>
 				</ResourceDictionary>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>

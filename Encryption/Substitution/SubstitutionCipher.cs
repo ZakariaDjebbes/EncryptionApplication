@@ -83,7 +83,7 @@ namespace Encryption.Substitution
 				SubstitutionTableEntry entry = null;
 
 				if (CaseSpecific)
-					entry = SubstitutionTableEntries.Where(x => x.Character.Equals(res)).FirstOrDefault();
+					entry = SubstitutionTableEntries.FirstOrDefault(x => x.Character.Equals(res));
 				else
 				{
 					var index = SubstitutionTableEntries.Select(x => x.Character).ToList().CaseInsensitiveIndexOf(res);
@@ -138,7 +138,7 @@ namespace Encryption.Substitution
 				SubstitutionTableEntry entry = null;
 
 				if (CaseSpecific)
-					entry = SubstitutionTableEntries.Where(x => x.Substitution.Equals(res)).FirstOrDefault();
+					entry = SubstitutionTableEntries.FirstOrDefault(x => x.Substitution.Equals(res));
 				else
 				{
 					var index = SubstitutionTableEntries.Select(x => x.Substitution).ToList().CaseInsensitiveIndexOf(res);

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using Encryption;
 using Encryption.Caesar;
@@ -14,7 +15,7 @@ namespace EncryptionApp.ViewModels
 
 		public int Shift
 		{
-			get { return shift; }
+			get => shift;
 			set
 			{
 				shift = value;
@@ -24,7 +25,7 @@ namespace EncryptionApp.ViewModels
 
 		public bool KeepCase
 		{
-			get { return keepCase; }
+			get => keepCase;
 			set
 			{
 				keepCase = value;
@@ -34,7 +35,7 @@ namespace EncryptionApp.ViewModels
 
 		public string Alphabet
 		{
-			get { return alphabet; }
+			get => alphabet;
 			set
 			{
 				if (!IsAlphabetValid(value.ToCharArray()))
@@ -80,9 +81,11 @@ namespace EncryptionApp.ViewModels
 			caesarCipher.EncryptionFinished += EncryptionFinished;
 		}
 
-		private bool IsAlphabetValid(char[] alphabet)
+		private static bool IsAlphabetValid(char[] alphabet)
 		{
-			for (int i = 0; i < alphabet.Length; i++)
+			if (alphabet == null) throw new ArgumentNullException(nameof(alphabet));
+
+			for (var i = 0; i < alphabet.Length; i++)
 			{
 				alphabet[i] = char.ToLower(alphabet[i]);
 			}

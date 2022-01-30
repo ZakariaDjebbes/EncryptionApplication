@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Encryption;
 using Encryption.SymmetricKey;
@@ -105,17 +106,17 @@ namespace EncryptionApp.ViewModels.SymmetricKeyViewModels
 			return vigenereCipher.Decrypt(input);
 		}
 
-		private static bool IsAlphabetValid(char[] alphabet)
+		private static bool IsAlphabetValid(IList<char> alphabet)
 		{
-			if (alphabet.Length < 1)
+			if (alphabet.Count < 1)
 				return false;
 
-			for (int i = 0; i < alphabet.Length; i++)
+			for (var i = 0; i < alphabet.Count; i++)
 			{
 				alphabet[i] = char.ToLower(alphabet[i]);
 			}
 
-			return alphabet.Length == alphabet.Distinct().Count();
+			return alphabet.Count == alphabet.Distinct().Count();
 		}
 
 		public static bool IsKeyValid(string key)

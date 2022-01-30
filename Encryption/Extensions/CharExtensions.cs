@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Encryption.Extentions
 {
@@ -11,7 +12,7 @@ namespace Encryption.Extentions
 		/// <returns>The index of the <see cref="char"/> in the <see cref="IList{T}{char}"/> or -1 if it does not exist.</returns>
 		internal static int CaseInsensitiveIndexOf(this IList<char> collection, char character)
 		{
-			for (int i = 0; i < collection.Count; i++)
+			for (var i = 0; i < collection.Count; i++)
 			{
 				if (collection[i] == char.ToLower(character) || collection[i] == char.ToUpper(character))
 				{
@@ -28,17 +29,7 @@ namespace Encryption.Extentions
 		/// <param name="character">The <see cref="char"/> to look for</param>
 		/// <returns>True if the <see cref="IList{char}"/> contains the <see cref="char"/>, false otherwise.</returns>
 		internal static bool CaseInsensitiveContains(this IList<char> collection, char character)
-		{
-			for (int i = 0; i < collection.Count; i++)
-			{
-				if (collection[i] == char.ToLower(character) || collection[i] == char.ToUpper(character))
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
+			=> collection.Any(t => t == char.ToLower(character) || t == char.ToUpper(character));
 
 		/// <summary>
 		/// Returns a lower case copy of an <see cref="IList{T}"/>.
@@ -46,9 +37,9 @@ namespace Encryption.Extentions
 		/// <returns><see cref="IList{char}"/></returns>
 		internal static IList<char> ToLower(this IList<char> collection)
 		{
-			char[] result = new char[collection.Count];
+			var result = new char[collection.Count];
 
-			for (int i = 0; i < collection.Count; i++)
+			for (var i = 0; i < collection.Count; i++)
 			{
 				if (char.IsLetter(collection[i]) && char.IsUpper(collection[i]))
 				{

@@ -12,7 +12,7 @@ namespace Encryption.Test
 		[OneTimeSetUp]
 		public void Setup()
 		{
-			vigenereCipher = new("required");
+			vigenereCipher = new VigenereCipher("required");
 		}
 
 		[TestCase("a super secret message", "a koeii kieiim wiqssat", "abcdefghijklmnopqrstuvwxyz", "asupersecretkey", true, true)]

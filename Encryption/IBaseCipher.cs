@@ -30,7 +30,18 @@ namespace Encryption
 		/// </summary>
 		event EventHandler<EventArgs> EncryptionStarted;
 
+		/// <summary>
+		/// Encrypts an input <see cref="string"/> using the algorithm and options that extends this class.
+		/// </summary>
+		/// <param name="input">the input <see cref="string"/> to encrypt.</param>
+		/// <returns><see cref="CipherResult"/></returns>
 		CipherResult Encrypt(string input);
+
+		/// <summary>
+		/// Decrypts an input <see cref="string"/> using the algorithm and options that extends this class.
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns><see cref="CipherResult"/></returns>
 		CipherResult Decrypt(string input);
 	}
 }

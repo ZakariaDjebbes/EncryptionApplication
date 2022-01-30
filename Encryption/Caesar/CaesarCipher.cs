@@ -16,7 +16,7 @@ namespace Encryption.Caesar
 
 		/// <summary>
 		/// The Alphabet <see cref="IList{T}"/> used by <see cref="Encrypt(string)"/> to encrypt the input.
-		/// The Alphabet should not have duplicates, an <see cref="ArgumentException"/> is thrown otherwise.
+		/// The Alphabet must not have duplicates, an <see cref="ArgumentException"/> is thrown otherwise.
 		/// <para>Default: abcdefghijklmnopqrstuvwxyz</para>
 		/// </summary>
 		/// <exception cref="ArgumentException"></exception>
@@ -63,6 +63,7 @@ namespace Encryption.Caesar
 		/// </summary>
 		/// <param name="alphabet">The alphabet <see cref="IList{T}"/> used for shifting</param>
 		/// <param name="shift">Caesar shift</param>
+		/// <param name="caseSpecific">Should the shift be case specific or no?</param>
 		public CaesarCipher(IList<char> alphabet, int shift, bool caseSpecific)
 		{
 			Alphabet = alphabet;
@@ -92,15 +93,15 @@ namespace Encryption.Caesar
 			watch.Start();
 			OnEncryptionStarted();
 
-			for (int i = 0; i < input.Length; i++)
+			for (var i = 0; i < input.Length; i++)
 			{
-				char res = input[i];
+				var res = input[i];
 
 				if (Alphabet.CaseInsensitiveContains(input[i]))
 				{
 					var index = Alphabet.CaseInsensitiveIndexOf(input[i]);
-					int offset = ((index + Shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
-					char newChar = Alphabet[offset];
+					var offset = ((index + Shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
+					var newChar = Alphabet[offset];
 
 					if (KeepCase && char.IsUpper(input[i]))
 						res = char.ToUpper(newChar);
@@ -140,16 +141,16 @@ namespace Encryption.Caesar
 			watch.Start();
 			OnEncryptionStarted();
 
-			for (int i = 0; i < input.Length; i++)
+			for (var i = 0; i < input.Length; i++)
 			{
-				char res = input[i];
+				var res = input[i];
 
 				if (Alphabet.CaseInsensitiveContains(input[i]))
 				{
 					var index = Alphabet.CaseInsensitiveIndexOf(input[i]);
 					// C# mod things, unlucky
-					int offset = ((index - Shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
-					char newChar = Alphabet[offset];
+					var offset = ((index - Shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
+					var newChar = Alphabet[offset];
 
 					if (KeepCase && char.IsUpper(input[i]))
 						res = char.ToUpper(newChar);
@@ -169,19 +170,19 @@ namespace Encryption.Caesar
 				builder.ToString());
 		}
 
-		private static bool IsAlphabetValid(char[] alphabet)
+		private static bool IsAlphabetValid(IList<char> alphabet)
 		{
 			// Alphabet must contain at least two characters
-			if (alphabet.Length < 2)
+			if (alphabet.Count < 2)
 				return false;
 
 			// Alphabet must not contain any duplicated characters, even if the case of characters isn't specific.
-			for (int i = 0; i < alphabet.Length; i++)
+			for (var i = 0; i < alphabet.Count; i++)
 			{
 				alphabet[i] = char.ToLower(alphabet[i]);
 			}
 
-			return alphabet.Length == alphabet.Distinct().Count();
+			return alphabet.Count == alphabet.Distinct().Count();
 		}
 	}
 }

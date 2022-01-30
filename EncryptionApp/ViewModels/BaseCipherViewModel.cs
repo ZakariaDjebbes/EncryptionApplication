@@ -4,15 +4,15 @@ namespace EncryptionApp.ViewModels
 {
 	internal abstract class BaseCipherViewModel : BaseViewModel
 	{
-		protected readonly EncryptionAppViewModel parent;
+		protected readonly EncryptionAppViewModel Parent;
 
 		public abstract CipherResult Encrypt(string input);
 
 		public abstract CipherResult Decrypt(string input);
 
-		public BaseCipherViewModel(EncryptionAppViewModel parent)
+		protected BaseCipherViewModel(EncryptionAppViewModel parent)
 		{
-			this.parent = parent;
+			Parent = parent;
 		}
 
 		protected virtual void EncryptionStarted(object sender, CipherEventArgs e)
@@ -21,14 +21,14 @@ namespace EncryptionApp.ViewModels
 
 		protected virtual void EncryptionOngoing(object sender, CipherEventArgs e)
 		{
-			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
-			parent.Progress = e.Pourcentage;
+			Parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
+			Parent.Progress = e.Pourcentage;
 		}
 
 		protected virtual void EncryptionFinished(object sender, CipherEventArgs e)
 		{
-			parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
-			parent.Progress = e.Pourcentage;
+			Parent.ElapsedTime = e.EncryptionTime.TotalSeconds;
+			Parent.Progress = e.Pourcentage;
 		}
 	}
 }

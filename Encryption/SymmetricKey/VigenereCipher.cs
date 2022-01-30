@@ -118,16 +118,16 @@ namespace Encryption.SymmetricKey
 			watch.Start();
 			OnEncryptionStarted();
 
-			for (int i = 0; i < input.Length; i++)
+			for (var i = 0; i < input.Length; i++)
 			{
-				char res = input[i];
+				var res = input[i];
 
 				if (Alphabet.CaseInsensitiveContains(input[i]))
 				{
-					int index = Alphabet.CaseInsensitiveIndexOf(input[i]);
-					int shift = Alphabet.CaseInsensitiveIndexOf(Key[i % Key.Length]);
-					int offset = ((index + shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
-					char newChar = Alphabet[offset];
+					var index = Alphabet.CaseInsensitiveIndexOf(input[i]);
+					var shift = Alphabet.CaseInsensitiveIndexOf(Key[i % Key.Length]);
+					var offset = ((index + shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
+					var newChar = Alphabet[offset];
 
 					if ((KeepCase && char.IsLower(input[i])) || !KeepCase)
 						res = char.ToLower(newChar);
@@ -163,16 +163,16 @@ namespace Encryption.SymmetricKey
 			watch.Start();
 			OnEncryptionStarted();
 
-			for (int i = 0; i < input.Length; i++)
+			for (var i = 0; i < input.Length; i++)
 			{
-				char res = input[i];
+				var res = input[i];
 
 				if (Alphabet.CaseInsensitiveContains(input[i]))
 				{
-					int index = Alphabet.CaseInsensitiveIndexOf(input[i]);
-					int shift = Alphabet.CaseInsensitiveIndexOf(Key[i % Key.Length]);
-					int offset = ((index - shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
-					char newChar = Alphabet[offset];
+					var index = Alphabet.CaseInsensitiveIndexOf(input[i]);
+					var shift = Alphabet.CaseInsensitiveIndexOf(Key[i % Key.Length]);
+					var offset = ((index - shift) % Alphabet.Count + Alphabet.Count) % Alphabet.Count;
+					var newChar = Alphabet[offset];
 
 					if ((KeepCase && char.IsLower(input[i])) || !KeepCase)
 						res = char.ToLower(newChar);
@@ -209,20 +209,7 @@ namespace Encryption.SymmetricKey
 		}
 
 		// Key cannot be empty
-		private bool IsKeyValid(string key)
-		{
-			if (string.IsNullOrEmpty(key))
-			{
-				return false;
-			}
-
-			for (int i = 0; i < key.Length; i++)
-			{
-				if (!Alphabet.CaseInsensitiveContains(key[i]))
-					return false;
-			}
-
-			return true;
-		}
+		private bool IsKeyValid(string key) =>
+			!string.IsNullOrEmpty(key) && key.All(t => Alphabet.CaseInsensitiveContains(t));
 	}
 }
